@@ -9,7 +9,10 @@ Console.WriteLine("Welcome to Math Game");
 Thread.Sleep(1000);
 Console.WriteLine("Please, enter your nickname:");
 string playerNickname = Console.ReadLine();
+
+//checking if nickname is null, and assigning "player" if yes
 if (playerNickname.Length <1) playerNickname = "Player";
+
 
 do
 {
@@ -40,13 +43,14 @@ do
             HistoryOfGames();
             exitGame = true;
             break;
+
         case "6":
             {
                 FinishGame();
                 break;
             }
 
-        case "Wrong Input":
+        case "7":
             Console.WriteLine("Please enter correct menu option");
             Thread.Sleep(750);
             break;
@@ -54,6 +58,7 @@ do
 } while (exitGame == false);
 
 
+//method allowing to navigate through menu and return correct player selection 
 string Menu()
 {
         Console.Clear();
@@ -67,12 +72,12 @@ string Menu()
             } 
             else
             {
-                return ("Wrong Input");
+                return ("7");
             }
 }
 
 
-//Addition Method
+//Addition Game Method
 
 void AdditionGame()
 {
@@ -81,21 +86,21 @@ void AdditionGame()
     Console.ReadKey();
 }
 
-//Substraction Method
+//Substraction Game Method
 void SubstractionGame()
 {
     Console.Clear();
     Console.WriteLine("Welcome to Substraction Game");
 }
 
-//Muptiplication Method
+//Muptiplication Game Method
 void MultiplicationGame()
 {
     Console.Clear();
     Console.WriteLine("Welcome to Mupltiplication Game");
 }
 
-//Division Method
+//Division Game Method
 void DivisionGame()
 {
     Console.Clear();
@@ -110,6 +115,7 @@ void HistoryOfGames()
     Console.WriteLine("Previous games:");
 }
 
+//method allowing player to exit the game if he wants to (either from menu or from every game end)
 bool FinishGame ()
 {
     do
