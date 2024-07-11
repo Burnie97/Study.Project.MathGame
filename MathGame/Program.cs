@@ -74,7 +74,6 @@ string Menu()
         Console.WriteLine("1. Addition Game \n2. Substraction Game \n3. Muptiplication Game \n4. Division Game \n5. Games history \n6. Change player \n7. Change Difficulty \n8. Exit");
         string readResult = Console.ReadLine() ?? "wrong";
          
-        
             if (readResult == "1" || readResult == "2" || readResult == "3" || readResult == "4" || readResult == "5" || readResult == "6" || readResult == "7" || readResult == "8")
             {
                 return readResult;
@@ -113,15 +112,11 @@ void AdditionGame()
         {
             points++;
         }
-
     }
     lastGamePoints = points;
     lastGameName = "Addition";
     Console.WriteLine($"Your total points: {points}.\nPress any key to go back to menu.");
     Console.ReadKey();
-    
-
-
 }
 
 void SubstractionGame()
@@ -142,7 +137,6 @@ void SubstractionGame()
         {
             points++;
         }
-
     }
     lastGamePoints = points;
     lastGameName = "Substraction";
@@ -168,7 +162,6 @@ void MultiplicationGame()
         {
             points++;
         }
-
     }
     lastGamePoints = points;
     lastGameName = "Multiplication";
@@ -197,8 +190,7 @@ void HistoryOfGames()
         Console.WriteLine("");
     }
     Console.WriteLine("\nPress any key to go back to menu.");
-    Console.ReadKey();
-        
+    Console.ReadKey();    
 }
 
 // method to store played game info 
@@ -217,7 +209,6 @@ void GameStatsRecord()
         }
         gameHistory = newArray;
 
-
         gameHistory[gameHistoryRecordCounter, 0] = playerNickname;
         gameHistory[gameHistoryRecordCounter, 1] = lastGameName;
         gameHistory[gameHistoryRecordCounter, 2] = selectedDifficulty;
@@ -235,6 +226,7 @@ bool FinishGame ()
         Console.Clear ();
         Console.WriteLine("Do you want to close the Game? All your history will be deleted (y/n)");
         string readResult = Console.ReadLine();
+
         if (readResult == "y")
         {
             exitGame = true;
@@ -265,7 +257,6 @@ int[] TwoNumberGenerator()
         default:
             return [random.Next(1, 11), random.Next(1, 11)];
     }
-
 }
 
 void ChooseDifficulty()
