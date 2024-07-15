@@ -1,80 +1,111 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Timers;
 //Math Game
 
 //Declaring variables
 bool exitGame = false;
 int[] numbers =  new int[2];
-string[,] gameHistory = new string[1,4];
-gameHistory[0, 0] = "Player"; gameHistory[0, 1] = "Game"; gameHistory[0, 2] = "Difficulty"; gameHistory[0, 3] = "Points";
+string[,] gameHistory = new string[1,5];
+gameHistory[0, 0] = "Player"; gameHistory[0, 1] = "Game"; gameHistory[0, 2] = "Difficulty"; gameHistory[0, 3] = "Points"; gameHistory[0,4] = "Time";
 int gameHistoryRecordCounter = 1;
+int points;
 int lastGamePoints;
+int questionNumbers = 5;
+string timePassed;
+string currentGameName;
 string lastGameName;
 string playerNickname = "Player";
 string selectedDifficulty = "easy";
+Stopwatch stopWatch = new Stopwatch();
 
-GameStart();
-    
-do
+Main();   
+
+
+void Main()
 {
-
-    switch (Menu())
+    GameStart();
+    do
     {
-        case "1":
-            AdditionGame();
-            GameStatsRecord();
-            break;
+        switch (Menu())
+        {
+            case "1":
+                currentGameName = "Addition Game";
+                GameGreeting();
+                AdditionGame();
+                ShowSingleGameStats();
+                GameStatsRecord();
+                break;
 
-        case "2":
-            SubstractionGame();
-            GameStatsRecord();
-            break;
+            case "2":
+                currentGameName = "Substraction Game";
+                GameGreeting();
+                SubstractionGame();
+                ShowSingleGameStats();
+                GameStatsRecord();
+                break;
 
-        case "3":
-            MultiplicationGame();
-            GameStatsRecord();
+            case "3":
+                currentGameName = "Multiplication Game";
+                GameGreeting();
+                MultiplicationGame();
+                ShowSingleGameStats();
+                GameStatsRecord();
 
-            break;
+                break;
 
-        case "4":
-            DivisionGame();
-            // Turn when Division Game will be done
-            // GameStatsRecord();
-            break;
+            case "4":
+                currentGameName = "Division Game";
+                GameGreeting();
+                DivisionGame();
+                ShowSingleGameStats();
+                GameStatsRecord();
+                break;
 
-        case "5":
-            HistoryOfGames();
-            break;
+            case "5":
+                currentGameName = "Random Game";
+                GameGreeting();
+                RandomGame();
+                ShowSingleGameStats();
+                GameStatsRecord();
+                break;
 
-        case "6":
-            GameStart();
-            break;
+            case "6":
+                HistoryOfGames();
+                break;
 
-        case "7":
-            ChooseDifficulty();
-            break;
+            case "7":
+                GameStart();
+                break;
 
+            case "8":
+                ChooseDifficulty();
+                break;
 
-        case "8":
-            FinishGame();
-            break;
+            case "9":
+                ChangeQuestionNumber();
+                break;
 
-        default:
-            Console.WriteLine("Please enter correct menu option");
-            Thread.Sleep(750);
-            break;
-    }
-} while (exitGame == false);
+            case "10":
+                FinishGame();
+                break;
 
-//methods
+            default:
+                Console.WriteLine("Please enter correct menu option");
+                Thread.Sleep(750);
+                break;
+        }
+    } while (exitGame == false);
+}
 
 string Menu()
 {
         Console.Clear();
         Console.WriteLine($"Hello, Dear {playerNickname}. \nYour current difficulty: {selectedDifficulty}. \nMenu:");
-        Console.WriteLine("1. Addition Game \n2. Substraction Game \n3. Muptiplication Game \n4. Division Game \n5. Games history \n6. Change player \n7. Change Difficulty \n8. Exit");
+        Console.WriteLine("1. Addition Game \n2. Substraction Game \n3. Multiplication Game \n4. Division Game \n5. Random Game \n6. Games history \n7. Change player \n8. Change Difficulty \n9. Change number of questions \n10. Exit");
         string readResult = Console.ReadLine() ?? "wrong";
          
-            if (readResult == "1" || readResult == "2" || readResult == "3" || readResult == "4" || readResult == "5" || readResult == "6" || readResult == "7" || readResult == "8")
+            if (readResult == "1" || readResult == "2" || readResult == "3" || readResult == "4" || readResult == "5" || readResult == "6" || readResult == "7" || readResult == "8" || readResult == "9" || readResult == "10")
             {
                 return readResult;
             } 
@@ -86,22 +117,22 @@ string Menu()
 
 void GameStart()
 {
+    selectedDifficulty = "easy";
     Console.Clear();   
     Console.WriteLine("Welcome to Math Game");
     Thread.Sleep(1000);
-    Console.WriteLine("Please, enter your nickname:");
+    Console.WriteLine("Please, enter your nickname (max 16 characters):");
     playerNickname = Console.ReadLine();
+    if (playerNickname.Length>16) playerNickname = playerNickname.Remove(16);
     if (playerNickname.Length < 1) playerNickname = "Unknown Player";
 }
 
 void AdditionGame()
 {
-    int points = 0;
-    Console.Clear ();
-    Console.WriteLine("Welcome to Addition Game.\nPress any key to start.");
-    Console.ReadKey();
-
-    for (int i = 0; i < 5; i++)
+    stopWatch.Reset();
+    stopWatch.Start();
+    points = 0;
+    for (int i = 0; i < questionNumbers; i++)
     {
         numbers = TwoNumberGenerator();
         Console.Clear();
@@ -113,20 +144,19 @@ void AdditionGame()
             points++;
         }
     }
+    stopWatch.Stop();
+    TimeSpan ts = stopWatch.Elapsed;
+    timePassed = String.Format ("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds/10);
     lastGamePoints = points;
     lastGameName = "Addition";
-    Console.WriteLine($"Your total points: {points}.\nPress any key to go back to menu.");
-    Console.ReadKey();
 }
 
 void SubstractionGame()
 {
-    int points = 0;
-    Console.Clear();
-    Console.WriteLine("Welcome to Substraction Game.\nPress any key to start.");
-    Console.ReadKey();
-
-    for (int i = 0; i < 5; i++)
+    stopWatch.Reset();
+    stopWatch.Start();
+    points = 0;
+    for (int i = 0; i < questionNumbers; i++)
     {
         numbers = TwoNumberGenerator();
         Console.Clear();
@@ -138,20 +168,19 @@ void SubstractionGame()
             points++;
         }
     }
+    stopWatch.Stop();
+    TimeSpan ts = stopWatch.Elapsed;
+    timePassed = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
     lastGamePoints = points;
     lastGameName = "Substraction";
-    Console.WriteLine($"Your total points: {points}.\nPress any key to go back to menu.");
-    Console.ReadKey();
 }
 
 void MultiplicationGame()
 {
-    int points = 0;
-    Console.Clear();
-    Console.WriteLine("Welcome to Multiplication Game.\nPress any key to start.");
-    Console.ReadKey();
-
-    for (int i = 0; i < 5; i++)
+    stopWatch.Reset();
+    stopWatch.Start();
+    points = 0;
+    for (int i = 0; i < questionNumbers; i++)
     {
         numbers = TwoNumberGenerator();
         Console.Clear();
@@ -163,17 +192,44 @@ void MultiplicationGame()
             points++;
         }
     }
+    stopWatch.Stop();
+    TimeSpan ts = stopWatch.Elapsed;
+    timePassed = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
     lastGamePoints = points;
     lastGameName = "Multiplication";
-    Console.WriteLine($"Your total points: {points}.\nPress any key to go back to menu.");
-    Console.ReadKey();
 }
 
 void DivisionGame()
 {
-    Console.Clear();
-    Console.WriteLine("Welcome to Division Game. Press any key to start (!UNDER CONSTRUCTION!)");
-    Console.ReadKey();
+    stopWatch.Reset();
+    stopWatch.Start();
+    points = 0;
+    for (int i = 0; i < questionNumbers; i++)
+    {
+        bool correctDivision = false;
+        do
+        {
+            numbers = TwoNumberGenerator();
+            if (numbers[0] % numbers[1] == 0)
+            {
+                correctDivision = true;
+            }
+
+        } while (correctDivision == false);
+        Console.Clear();
+        Console.Write($" {numbers[0]} / {numbers[1]} = ");
+        int answer = 0;
+        int.TryParse(Console.ReadLine(), out answer);
+        if (answer == numbers[0] / numbers[1])
+        {
+            points++;
+        }
+    }
+    stopWatch.Stop();
+    TimeSpan ts = stopWatch.Elapsed;
+    timePassed = String.Format("{0:00}:{1:00}.{2:00}", ts.Minutes, ts.Seconds, ts.Milliseconds / 10);
+    lastGamePoints = points;
+    lastGameName = "Division";
 }
 
 //History of games array display
@@ -212,10 +268,64 @@ void GameStatsRecord()
         gameHistory[gameHistoryRecordCounter, 0] = playerNickname;
         gameHistory[gameHistoryRecordCounter, 1] = lastGameName;
         gameHistory[gameHistoryRecordCounter, 2] = selectedDifficulty;
-        gameHistory[gameHistoryRecordCounter, 3] = ($"{lastGamePoints}");
+        gameHistory[gameHistoryRecordCounter, 3] = ($"{lastGamePoints}/{questionNumbers}");
+        gameHistory[gameHistoryRecordCounter, 4] = timePassed;
 
         gameHistoryRecordCounter++;
     }
+}
+
+void RandomGame()
+{
+    stopWatch.Reset();
+    stopWatch.Start();
+    Random random = new Random();
+    int randomGamePoints = 0;
+    int randomQuestions = questionNumbers;
+    long randomTimer = 0;
+
+    for (int i = 0; i < randomQuestions; i++)
+    {
+        questionNumbers = 1;
+        switch (random.Next(1, 5))
+        
+        {
+            case 1:
+                AdditionGame();
+                randomGamePoints += points;
+                randomTimer += stopWatch.ElapsedMilliseconds;
+                break;
+
+            case 2:
+                SubstractionGame();
+                randomGamePoints += points;
+                randomTimer += stopWatch.ElapsedMilliseconds;
+                break;
+
+            case 3:
+                MultiplicationGame();
+                randomGamePoints += points;
+                randomTimer += stopWatch.ElapsedMilliseconds;
+                break;
+            case 4:
+                DivisionGame();
+                randomGamePoints += points;
+                randomTimer += stopWatch.ElapsedMilliseconds;
+                break;
+        }
+    }
+    TimeSpan tsr = TimeSpan.FromMilliseconds (randomTimer);
+    timePassed = String.Format("{0:00}:{1:00}.{2:00}", tsr.Minutes, tsr.Seconds, tsr.Milliseconds / 10);
+    points = randomGamePoints;
+    lastGamePoints = randomGamePoints;
+    lastGameName = "Random Game";
+    questionNumbers = randomQuestions;
+}
+
+void ShowSingleGameStats()
+{
+    Console.WriteLine($"Your total points: {points}.\nYour Time:{timePassed}  \nPress any key to go back to menu.");
+    Console.ReadKey();
 }
 
 //method asking players confirmation to exit the game 
@@ -252,7 +362,7 @@ int[] TwoNumberGenerator()
             return [random.Next(1, 51), random.Next(1, 51)];
         
         case "hard":
-            return [random.Next(1, 101), random.Next(1, 101)];
+            return [random.Next(1, 101), random.Next(2, 101)];
         
         default:
             return [random.Next(1, 11), random.Next(1, 11)];
@@ -287,4 +397,34 @@ void ChooseDifficulty()
             Thread.Sleep (700);
         }
     }
+}
+
+//method to switch number of questions in games (from 1 to 20)
+void ChangeQuestionNumber()
+{
+    while (true)
+    {
+        Console.Clear();
+        Console.WriteLine($"Current number of questions is {questionNumbers} \nPlease, enter how many questions you want to answer in each game (from 1 to 20):");
+        string readResult = Console.ReadLine();
+
+        if (int.TryParse(readResult, out int result) == true && result < 21 && result > 0)
+        {
+            questionNumbers = result;
+            return;
+        }
+        else
+        {
+            Console.WriteLine("Please, enter correct number from 1 to 20.");
+            Thread.Sleep(700);
+        }
+    }
+}
+
+void GameGreeting()
+{
+    lastGamePoints = 0;
+    Console.Clear();
+    Console.WriteLine($"Welcome to {currentGameName} Game.\nPress any key to start.");
+    Console.ReadKey();
 }
